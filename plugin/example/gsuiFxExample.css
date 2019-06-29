@@ -1,0 +1,8 @@
+:root {
+	--gsuiFxExample-bg: #666;
+}
+
+.gsuiFxExample {
+	height: 100%;
+	background-color: var( --gsuiFxExample-bg );
+}

@@ -1,0 +1,26 @@
+{
+    "name": "webaudioplugin",
+    "version": "1.0.0",
+    "description": "Plugin web using Web Audio API",
+    "main": "index.js",
+    "scripts": {
+        "start": "lite-server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/Lyeed/web-audio-plugins.git"
+    },
+    "keywords": [
+        "webaudio"
+    ],
+    "author": "Lyeed",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Lyeed/web-audio-plugins/issues"
+    },
+    "homepage": "https://github.com/Lyeed/web-audio-plugins#readme",
+    "devDependencies": {
+        "lite-server": "^2.5.3"
+    }
+}

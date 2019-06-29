@@ -1,0 +1,82 @@
+html,
+body {
+	height: 100%;
+}
+body {
+	margin: 0;
+	color: #ddd;
+	background-color: #333;
+}
+
+/* .......................................................................... */
+#main {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+}
+#bufferBtns,
+#canvases,
+#pluginArea {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* .......................................................................... */
+#bufferBtns {
+	padding-right: 60px;
+	flex-direction: column;
+	align-items: initial;
+}
+#bufferBtns button {
+    all: unset;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    padding: 2px 8px;
+    border: 1px solid;
+    border-radius: 3px;
+	margin-top: 1em;
+}
+/* .......................................................................... */
+#canvases {
+	flex-direction: column;
+}
+#spectrums {
+	display: flex;
+	flex-direction: column;
+}
+#analysers {
+	display: flex;
+}
+#canvases canvas {
+	background-color: #000;
+}
+#spectrums canvas {
+	width: 300px;
+	height: 64px;
+	margin-bottom: 2px;
+}
+#analysers canvas {
+	width: 96px;
+	height: 300px;
+}
+#analyserIn {
+	margin-right: 2px;
+}
+
+/* .......................................................................... */
+#pluginArea {
+	padding-left: 60px;
+}
+#pluginWrap {
+	width: 420px;
+	height: 210px;
+	min-width: 250px;
+	min-height: 100px;
+	resize: both;
+	overflow: hidden;
+	border-radius: 2px;
+	box-shadow: 0 0 0 4px rgba( 0, 0, 0, .25 );
+}

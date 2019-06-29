@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>gs-plugin-env</title>
+<meta charset="utf-8"/>
+<link rel="stylesheet" href="style.css"/>
+<link rel="stylesheet" href="http://localhost/gs-plugin-env/plugin/example/gsuiFxExample.css"/>
+</head>
+<body>
+
+<div id="main">
+	<div id="bufferBtns">
+		<button data-name="56k.ogg">56k</button>
+        <button data-name="whistle.ogg">Whistle</button>
+        <button data-name="maroon.ogg">Maroon5</button>
+		<button>stop</button>
+	</div>
+	<div id="canvases">
+		<div id="spectrums">
+			<canvas id="spectrumIn"></canvas>
+			<canvas id="spectrumOut"></canvas>
+		</div>
+		<div id="analysers">
+			<canvas id="analyserIn"></canvas>
+			<canvas id="analyserOut"></canvas>
+		</div>
+	</div>
+	<div id="pluginArea">
+		<div id="pluginWrap"></div>
+	</div>
+</div>
+
+<script>function lg( a ) { return console.log.apply( console, arguments ), a; }</script>
+<script src="http://localhost/gs-ui-components/gsuiAnalyser/gsuiAnalyser.js"></script>
+<script src="http://localhost/gs-ui-components/gsuiSpectrum/gsuiSpectrum.js"></script>
+<script src="http://localhost/gs-ui-components/gsuiSpectrum/gsuiSpectrum.draw.js"></script>
+<script src="http://localhost/gs-plugin-env/plugin/example/gswaFxExample.js"></script>
+<script src="run.js"></script>
+</body>
+</html>
