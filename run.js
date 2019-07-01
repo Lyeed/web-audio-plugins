@@ -47,6 +47,7 @@ function setup() {
 
 	fx.setContext( ctx );
 	document.querySelector( "#pluginWrap" ).append( uiFx.rootElement );
+    uiFx.attached();
 	uiFx.oninput = ( param, val ) => {
 		lg( "gsuiFxExample.oninput", param, val );
 		fx.liveChange( param, val );
