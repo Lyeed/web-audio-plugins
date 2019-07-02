@@ -6,23 +6,28 @@
     <link rel="stylesheet" href="style.css"/>
     <link rel="stylesheet" href="plugin/example/gsuiFxExample.css"/>
     <link rel="stylesheet" href="gs-ui-components/gsuiDotline/gsuiDotline.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="main">
     	<div id="bufferBtns">
-    		<button data-name="56k.ogg">56k</button>
-            <button data-name="whistle.ogg">Whistle</button>
-            <button data-name="maroon.ogg">Maroon5</button>
-    		<button>stop</button>
+    		<button class="btnAsset" data-name="56k.ogg">56k</button>
+            <button class="btnAsset" data-name="whistle.ogg">Whistle</button>
+            <button class="btnAsset" data-name="maroon.ogg">Maroon5</button>
+    		<button class="btnAsset" id="btnStop">stop</button>
     	</div>
     	<div id="canvases">
+            <h3>SPECTRUMS</h3>
     		<div id="spectrums">
     			<canvas id="spectrumIn"></canvas>
     			<canvas id="spectrumOut"></canvas>
     		</div>
+            <h3>ANALYSERS</h3>
     		<div id="analysers">
+                <span class="analyserDesc">Original</span>
     			<canvas id="analyserIn"></canvas>
     			<canvas id="analyserOut"></canvas>
+                <span class="analyserDesc">Modified</span>
     		</div>
     	</div>
     	<div id="pluginArea">

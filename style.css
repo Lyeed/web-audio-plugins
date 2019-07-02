@@ -6,13 +6,17 @@ body {
 	margin: 0;
 	color: #ddd;
 	background-color: #333;
+    font-family: 'Roboto', sans-serif;
 }
 
 /* .......................................................................... */
 #main {
 	height: 100%;
-	display: flex;
+	display: grid;
+    grid-auto-flow: column;
 	justify-content: center;
+    align-items: center;
+    grid-gap: 64px;
 }
 #bufferBtns,
 #canvases,
@@ -24,21 +28,27 @@ body {
 
 /* .......................................................................... */
 #bufferBtns {
-	padding-right: 60px;
-	flex-direction: column;
-	align-items: initial;
+    display: grid;
+    grid-gap: 1em;
+    border-radius: 2px;
+    box-shadow: 0 0 0 4px rgba( 0, 0, 0, .25 );
+    padding: 18px;
+    background-color: #3f3f3f;
 }
-#bufferBtns button {
+.btnAsset {
     all: unset;
     font-size: 22px;
     cursor: pointer;
-    color: white;
+    color: #ddd;
     text-align: center;
     padding: 2px 8px;
-    border: 1px solid;
+    background-color: black;
     border-radius: 3px;
-	margin-top: 1em;
 }
+#btnStop {
+    background-color: #760a0a;
+}
+
 /* .......................................................................... */
 #canvases {
 	flex-direction: column;
@@ -52,6 +62,11 @@ body {
 }
 #canvases canvas {
 	background-color: #000;
+}
+#canvases h3 {
+    font-size: 42px;
+    margin-bottom: 4px;
+    color: #ddd;
 }
 #spectrums canvas {
 	width: 300px;
@@ -68,7 +83,6 @@ body {
 
 /* .......................................................................... */
 #pluginArea {
-	padding-left: 60px;
 }
 #pluginWrap {
 	resize: both;
@@ -79,7 +93,6 @@ body {
 
 /* .......................................................................... */
 .gsuiDotline {
-    margin: 14px;
     background-color: black;
     min-height: 200px;
     box-sizing: border-box;
@@ -92,4 +105,12 @@ body {
 .gsuiDotline polyline {
     stroke: #fff;
     stroke-width: 2px;
+}
+
+/* .......................................................................... */
+.analyserDesc {
+    writing-mode: vertical-lr;
+    font-size: 36px;
+    margin-top: 12px;
+    opacity: 0.6;
 }

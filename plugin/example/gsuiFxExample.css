@@ -3,6 +3,41 @@
 }
 
 .gsuiFxExample {
+    display: grid;
+    grid-gap: 8px;
 	height: 100%;
 	background-color: var( --gsuiFxExample-bg );
+    padding: 6px;
+}
+
+.gsuiFxExample h2 {
+    margin-top: 0;
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+}
+
+.gsuiDotline::after,
+.gsuiDotline::before {
+    content: 'L';
+    color: #fff;
+    opacity: .2;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 100px;
+    padding-left: 3px;
+    font-size: 62px;
+    pointer-events: none;
+}
+
+.gsuiDotline::before {
+    content: 'R';
+    border: 0;
+    border-bottom: 1px solid;
+    border-style: dashed;
+    box-sizing: border-box;
 }
