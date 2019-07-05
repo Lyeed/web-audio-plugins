@@ -8,36 +8,101 @@
 	height: 100%;
 	background-color: var( --gsuiFxExample-bg );
     padding: 6px;
+    --gsuiSlider-lineColor: #313bbf;
+    --gsuiSlider-lineBgColor: rgba( 0, 0, 0, .5 );
 }
 
-.gsuiFxExample h2 {
-    margin-top: 0;
+.gsuiFxExample .gsuiDotline {
+    background-color: #333;
 }
-
-label {
-    display: flex;
-    flex-direction: column;
-    padding: 3px;
-}
-
-.gsuiDotline::after,
-.gsuiDotline::before {
+.gsuiFxExample .gsuiDotline::after,
+.gsuiFxExample .gsuiDotline::before {
     content: 'L';
-    color: #fff;
-    opacity: .2;
-    width: 100%;
     display: flex;
     align-items: center;
+    padding-left: 20px;
     height: 100px;
-    padding-left: 3px;
-    font-size: 62px;
+    color: #fff;
+    font-size: 84px;
+    opacity: .07;
     pointer-events: none;
 }
-
-.gsuiDotline::before {
+.gsuiFxExample .gsuiDotline::before {
     content: 'R';
     border: 0;
     border-bottom: 1px solid;
     border-style: dashed;
     box-sizing: border-box;
+}
+
+.gsuiFxEcho-title {
+    margin-top: 0;
+    margin-bottom: .2em;
+    font-size: 2rem;
+}
+
+.gsuiFxEcho-configWrap,
+.gsuiFxEcho-lowpassWrap,
+.gsuiFxEcho-gainWrap {
+    display: flex;
+    flex-direction: column-reverse;
+    font-size: 18px;
+    text-align: center;
+}
+
+.gsuiFxEcho-echoTitle {
+    margin: 0;
+    text-align: center;
+}
+.gsuiFxEcho-echoSliders {
+    display: grid;
+    grid-auto-flow: column;
+}
+
+.gsuiFxEcho-configWrap .gsuiSlider,
+.gsuiFxEcho-echoSliders .gsuiSlider {
+    margin-bottom: 6px;
+}
+
+.gsuiFxEcho-echoWrap {
+    display: grid;
+    padding: 12px;
+    background-color: #404040;
+    grid-gap: 18px;
+    border-radius: 3px;
+}
+
+.gsuiFxEcho-beatsWrap {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.gsuiFxEcho-beatsWrap::before,
+.gsuiFxEcho-beatsWrap::after {
+    font-family: "Font Awesome 5 Pro";
+    content: "\f060";
+    flex: 1;
+    font-weight: 900;
+}
+.gsuiFxEcho-beatsWrap::after {
+    content: "\f061";
+}
+.gsuiFxEcho-beatsWrap::after {
+    text-align: right;
+}
+
+.gsuiFxEcho-beats {
+    box-sizing: border-box;
+    border: 0;
+    width: 80px;
+    padding: 4px;
+    margin-right: 6px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 18px;
+    background-color: rgba( 0, 0, 0, .5 );
+}
+
+.gsuiSlider {
+    height: 50px !important;
 }

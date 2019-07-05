@@ -1,11 +1,21 @@
 <div class="gsuiFxExample" id="gsuiFxExample">
-	<h2>ECHO</h2>
-    <label>
-        Gain
-        <input type="range" class="gsuiGain-slider" min="0" max="1" step="0.01" />
+	<h1 class="gsuiFxEcho-title">ECHO</h1>
+    <label class="gsuiFxEcho-configWrap">
+        <span>input volume</span>
     </label>
-    <label>
-        Lowpass
-    	<input type="range" class="gsuiFxExample-slider" min="0" max="20000"/>
-    </label>
+    <div class="gsuiFxEcho-echoWrap hidden">
+        <h2 class="gsuiFxEcho-echoTitle">Selection dot options</h2>
+        <div class="gsuiFxEcho-echoSliders">
+            <label class="gsuiFxEcho-gainWrap">
+                <span>gain</span>
+            </label>
+            <label class="gsuiFxEcho-lowpassWrap">
+                <span>lowpass</span>
+            </label>
+        </div>
+    </div>
+    <div class="gsuiFxEcho-beatsWrap">
+        <input type="number" min="0" step="0.001" class="gsuiFxEcho-beats">
+        <span>beats</span>
+    </div>
 </div>

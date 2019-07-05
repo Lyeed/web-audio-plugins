@@ -85,7 +85,7 @@ body {
 #pluginArea {
 }
 #pluginWrap {
-	resize: both;
+	/*resize: both;*/
 	overflow: hidden;
 	border-radius: 2px;
 	box-shadow: 0 0 0 4px rgba( 0, 0, 0, .25 );
@@ -113,4 +113,9 @@ body {
     font-size: 36px;
     margin-top: 12px;
     opacity: 0.6;
+}
+
+.hidden {
+    visibility: hidden;
+    height: 0px;
 }

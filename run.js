@@ -1,5 +1,7 @@
 "use strict";
 
+import objectDeepAssign from './utils/objectDeepAssign.js';
+
 const ctx = new AudioContext();
 const audioIn = ctx.createGain();
 const audioInSplit = ctx.createChannelSplitter( 2 );
@@ -27,6 +29,7 @@ const spectrumOut = new gsuiSpectrum();
 const analyserIn = new gsuiAnalyser();
 const analyserOut = new gsuiAnalyser();
 const fx = new gswaFxExample();
+const pluginWrap = document.querySelector( "#pluginWrap" );
 
 Promise.all( [
 	fetch( "plugin/example/gsuiFxExample.html" ).then( res => res.text() ),
@@ -40,23 +43,31 @@ Promise.all( [
 	document.body.append( div.firstElementChild, script );
 	setup();
 	document.querySelector( "#bufferBtns" ).onclick = onclickButtons;
+    // pluginWrap.onmouseup = e => {
+    //     lg(e.target, 564)
+    // };
+    window.uiFx.data.beats = 4;
 } );
 
 function setup() {
 	const uiFx = new gsuiFxExample();
 
+    window.uiFx = uiFx;
 	fx.setContext( ctx );
-	document.querySelector( "#pluginWrap" ).append( uiFx.rootElement );
+    fx.setBPM( 120 );
+	pluginWrap.append( uiFx.rootElement );
     uiFx.attached();
 	uiFx.oninput = ( param, val ) => {
 		lg( "gsuiFxExample.oninput", param, val );
-		fx.liveChange( param, val );
+        if ( param === 'gain' ) {
+            audioIn.gain.setValueAtTime( val, ctx.currentTime );
+        }
+		// fx.liveChange( param, val );
 	};
 	uiFx.onchange = obj => {
-		lg( "gsuiFxExample.onchange", obj );
+		/*lg( "gsuiFxExample.onchange", obj );*/
+        objectDeepAssign(fx.data, obj);
 	};
-	fx.data.lowpass =
-	uiFx.data.lowpass = 200;
 
 	audioInAnalyser.fftSize =
 	audioInAnalyserL.fftSize =
@@ -75,7 +86,6 @@ function setup() {
 	audioOutSplit.connect( audioOutAnalyserL, 0 );
 	audioOutSplit.connect( audioOutAnalyserR, 1 );
 
-	audioIn.gain.value = 2; // to remove
 	audioIn.connect( audioInAnalyser );
 	audioIn.connect( audioInSplit );
 	audioIn.connect( fx.input );
