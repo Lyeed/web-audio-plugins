@@ -28,12 +28,12 @@ const spectrumIn = new gsuiSpectrum();
 const spectrumOut = new gsuiSpectrum();
 const analyserIn = new gsuiAnalyser();
 const analyserOut = new gsuiAnalyser();
-const fx = new gswaFxExample();
+const fx = new gswaFxEcho();
 const pluginWrap = document.querySelector( "#pluginWrap" );
 
 Promise.all( [
-	fetch( "plugin/example/gsuiFxExample.html" ).then( res => res.text() ),
-	fetch( "plugin/example/gsuiFxExample.js" ).then( res => res.text() )
+	fetch( "plugin/echo/gsuiFxEcho.html" ).then( res => res.text() ),
+	fetch( "plugin/echo/gsuiFxEcho.js" ).then( res => res.text() )
 ] ).then( arr => {
 	const div = document.createElement( "div" );
 	const script = document.createElement( "script" );
@@ -50,7 +50,7 @@ Promise.all( [
 } );
 
 function setup() {
-	const uiFx = new gsuiFxExample();
+	const uiFx = new gsuiFxEcho();
 
     window.uiFx = uiFx;
 	fx.setContext( ctx );
@@ -58,14 +58,13 @@ function setup() {
 	pluginWrap.append( uiFx.rootElement );
     uiFx.attached();
 	uiFx.oninput = ( param, val ) => {
-		lg( "gsuiFxExample.oninput", param, val );
-        if ( param === 'gain' ) {
+		lg( "gsuiFxEcho.oninput", param, val );
+        if ( param === "gain" ) {
             audioIn.gain.setValueAtTime( val, ctx.currentTime );
         }
-		// fx.liveChange( param, val );
 	};
 	uiFx.onchange = obj => {
-		/*lg( "gsuiFxExample.onchange", obj );*/
+		lg( "gsuiFxEcho.onchange", obj );
         objectDeepAssign(fx.data, obj);
 	};
 

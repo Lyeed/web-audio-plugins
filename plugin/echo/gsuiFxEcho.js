@@ -1,10 +1,11 @@
 "use strict";
 
-class gsuiFxExample {
+class gsuiFxEcho {
 	constructor() {
-		const root = gsuiFxExample.template.cloneNode( true ),
+		const root = gsuiFxEcho.template.cloneNode( true ),
             beatsInput = root.querySelector( ".gsuiFxEcho-beats" ),
             echoConfigWrap = root.querySelector( ".gsuiFxEcho-echoWrap" ),
+            dotsLink = root.querySelector( ".gsuiFxEcho-dotsLink" ),
             dots = new gsuiDotline(),
             gain = new gsuiSlider(),
             dotGain = new gsuiSlider(),
@@ -28,17 +29,19 @@ class gsuiFxExample {
         root.querySelector( ".gsuiFxEcho-gainWrap" ).append( dotGain.rootElement );
         root.querySelector( ".gsuiFxEcho-lowpassWrap" ).append( dotLowpass.rootElement );
         root.querySelector( ".gsuiFxEcho-configWrap" ).append( gain.rootElement );
-        this.rootElement.append( dots.rootElement );
+        root.querySelector( ".gsuiFxEcho-dotsWrap" ).append( dots.rootElement );
 
         dots.options( { firstLinkedTo: 5, lastLinkedTo: 5, step: .001, maxX: 10, minX: 0, maxY: 1, minY: -1 } );
+        dots.dotsMoveMode( "free" );
         gain.options( { type: "circular", min: 0, max: 1, step: 0.05, value: 1 } );
-        dotGain.options( { type: "circular", min: 0, max: 1, step: 0.05, value: .5 } );
-        dotLowpass.options( { type: "circular", min: 0, max: 2000, step: 20, value: 0 } );
+        dotGain.options( { type: "circular", min: 0, max: 1, step: 0.01, value: 1 } );
+        dotLowpass.options( { type: "circular", min: 0, max: 1, step: 0.01, value: 1 } );
 
         blines.render();
 
         dots.rootElement.addEventListener( "click", this._onClickDot.bind( this ));
 
+        dotsLink.onchange = this._onchangeDotsLinkInput.bind( this );
         beatsInput.onchange = this._onchangeBeatsInput.bind( this );
         gain.oninput = this._oninputGainSlider.bind( this );
         gain.onchange = this._onchangeGainSlider.bind( this );
@@ -71,7 +74,7 @@ class gsuiFxExample {
                 this._elDotGain.value = val;
                 break;
             case "echoLowpass":
-                this._elDotGain.value = val;
+                this._elDotLowpass.value = val;
                 break;
             case "echoes":
                 this._elDots.value = val;
@@ -95,9 +98,24 @@ class gsuiFxExample {
 	}
 
 	// events:
+    _onchangeDotsLinkInput( e ) {
+        this._elDots.dotsMoveMode( e.target.checked ? "linked" : "free" );
+    }
+
     _onClickDot() {
-        if (this._elDots.dotClicked && this._elDotConfigWrap.classList.contains( "hidden" ) ) {
-            this._elDotConfigWrap.classList.remove( "hidden" );
+        const dotClicked = this._elDots.dotClicked;
+
+        if (dotClicked) {
+            const id = +dotClicked.dataset.dotsId.slice( -1 );
+            const echo = this.data.echoes[id];
+
+            this._elDotGain.setValue(echo.gain);
+            this._elDotLowpass.setValue(echo.lowpass);
+            if ( this._elDotConfigWrap.classList.contains( "hidden" ) ) {
+                this._elDotConfigWrap.classList.remove( "hidden" );
+            }
+        } else if ( !this._elDotConfigWrap.classList.contains( "hidden" ) ) {
+            this._elDotConfigWrap.classList.add( "hidden" );
         }
     }
 
@@ -176,6 +194,7 @@ class gsuiFxExample {
                 obj[ i ] =
                 echoes[ i ] = {
                     gain: 1,
+                    lowpass: 1,
                     pan: +dot[ 1 ],
                     delay: +dot[ 0 ],
                 };
@@ -255,6 +274,6 @@ class gsuiFxExample {
     }
 }
 
-gsuiFxExample.template = document.querySelector( "#gsuiFxExample" );
-gsuiFxExample.template.remove();
-gsuiFxExample.template.removeAttribute( "id" );
+gsuiFxEcho.template = document.querySelector( "#gsuiFxEcho" );
+gsuiFxEcho.template.remove();
+gsuiFxEcho.template.removeAttribute( "id" );

@@ -1,22 +1,22 @@
 :root {
-	--gsuiFxExample-bg: #666;
+	--gsuiFxEcho-bg: #666;
 }
 
-.gsuiFxExample {
+.gsuiFxEcho {
     display: grid;
     grid-gap: 8px;
 	height: 100%;
-	background-color: var( --gsuiFxExample-bg );
+	background-color: var( --gsuiFxEcho-bg );
     padding: 6px;
     --gsuiSlider-lineColor: #313bbf;
     --gsuiSlider-lineBgColor: rgba( 0, 0, 0, .5 );
 }
 
-.gsuiFxExample .gsuiDotline {
+.gsuiFxEcho .gsuiDotline {
     background-color: #333;
 }
-.gsuiFxExample .gsuiDotline::after,
-.gsuiFxExample .gsuiDotline::before {
+.gsuiFxEcho .gsuiDotline::after,
+.gsuiFxEcho .gsuiDotline::before {
     content: 'L';
     display: flex;
     align-items: center;
@@ -27,7 +27,7 @@
     opacity: .07;
     pointer-events: none;
 }
-.gsuiFxExample .gsuiDotline::before {
+.gsuiFxEcho .gsuiDotline::before {
     content: 'R';
     border: 0;
     border-bottom: 1px solid;
@@ -105,4 +105,9 @@
 
 .gsuiSlider {
     height: 50px !important;
+}
+
+.gsuiFxEcho-dotsLinkLabel {
+    display: flex;
+    align-items: center;
 }
