@@ -31,7 +31,7 @@ class gsuiFxEcho {
         root.querySelector( ".gsuiFxEcho-configWrap" ).append( gain.rootElement );
         root.querySelector( ".gsuiFxEcho-dotsWrap" ).append( dots.rootElement );
 
-        dots.options( { firstLinkedTo: 5, lastLinkedTo: 5, step: .001, maxX: 10, minX: 0, maxY: 1, minY: -1 } );
+        dots.options( { step: .001, maxX: 10, minX: 0, maxY: 1, minY: -1 } );
         dots.dotsMoveMode( "free" );
         gain.options( { type: "circular", min: 0, max: 1, step: 0.05, value: 1 } );
         dotGain.options( { type: "circular", min: 0, max: 1, step: 0.01, value: 1 } );
@@ -175,49 +175,24 @@ class gsuiFxEcho {
     _oninputDots( echoes ) {
         this._callOninput( "echoes", echoes );
     }
-    _onchangeDots( dotsStr ) {
-        const obj = {};
-        const echoes = this.data.echoes;
-        const dots = dotsStr.split( "," );
-        const oldCount = Object.keys( echoes ).length;
-        const newCount = dots.length;
+    _onchangeDots( dots ) {
+        const echoes = {};
 
-        if ( oldCount > newCount ) {
-            for ( let i = newCount; i < oldCount; ++i ) {
-                obj[ i ] = undefined;
-                delete echoes[ i ];
-            }
-        } else if ( oldCount < newCount ) {
-            for ( let i = oldCount; i < newCount; ++i ) {
-                const dot = dots[ i ].split( " " );
+        Object.keys( dots ).forEach( key => {
+            const dot = dots[ key ];
+            if (!dot) {
+                echoes[ key ] = undefined;
+            } else {
+                const x = dot.x;
+                const y = dot.y;
 
-                obj[ i ] =
-                echoes[ i ] = {
-                    gain: 1,
-                    lowpass: 1,
-                    pan: +dot[ 1 ],
-                    delay: +dot[ 0 ],
-                };
+                echoes[ key ] = {};
+                if ( x !== undefined ) { echoes[ key ].delay = x; }
+                if ( y !== undefined ) { echoes[ key ].pan = y; }
             }
-        }
-        for ( let i = 0; i < oldCount; ++i ) {
-            const dot = dots[ i ].split( " " );
-            const oldEcho = echoes[ i ];
-            const newEcho = {};
-            const gain = 1;
-            const pan = +dot[ 1 ];
-            const delay = +dot[ 0 ];
-            let diff;
+        });
 
-            if ( pan !== oldEcho.pan ) { newEcho.pan = pan; diff = true; };
-            if ( gain !== oldEcho.gain ) { newEcho.gain = gain; diff = true; };
-            if ( delay !== oldEcho.delay ) { newEcho.delay = delay; diff = true; };
-            if ( diff ) {
-                obj[ i ] =
-                echoes[ i ] = newEcho;
-            }
-        }
-        this._callOnchange( lg({ echoes: obj }) );
+        this._callOnchange( lg({ echoes }) );
     }
 
     _addEcho( id ) {

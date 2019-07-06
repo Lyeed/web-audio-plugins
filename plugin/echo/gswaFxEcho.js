@@ -40,7 +40,7 @@ class gswaFxEcho {
     }
     _removeEcho( id ) {
         lg( "waFxRemoveEcho", id );
-        this._repetitions[ id ].delay.disconnect( this.input );
+        this.input.disconnect( this._repetitions[ id ].delay );
         delete this._repetitions[ id ];
     }
     _updateEcho( id, param, val ) {
