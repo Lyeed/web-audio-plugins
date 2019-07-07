@@ -8,7 +8,7 @@
 	height: 100%;
 	background-color: var( --gsuiFxEcho-bg );
     padding: 6px;
-    --gsuiSlider-lineColor: #313bbf;
+    --gsuiSlider-lineColor: #a14040;
     --gsuiSlider-lineBgColor: rgba( 0, 0, 0, .5 );
 }
 
@@ -43,6 +43,7 @@
 
 .gsuiFxEcho-configWrap,
 .gsuiFxEcho-lowpassWrap,
+.gsuiFxEcho-highpassWrap,
 .gsuiFxEcho-gainWrap {
     display: flex;
     flex-direction: column-reverse;
@@ -64,7 +65,7 @@
     margin-bottom: 6px;
 }
 
-.gsuiFxEcho-echoWrap {
+.gsuiFxEcho-echoSliders {
     display: grid;
     padding: 12px;
     background-color: #404040;

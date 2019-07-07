@@ -4,12 +4,13 @@ class gsuiFxEcho {
 	constructor() {
 		const root = gsuiFxEcho.template.cloneNode( true ),
             beatsInput = root.querySelector( ".gsuiFxEcho-beats" ),
-            echoConfigWrap = root.querySelector( ".gsuiFxEcho-echoWrap" ),
+            echoConfigWrap = root.querySelector( ".gsuiFxEcho-echoSliders" ),
             dotsLink = root.querySelector( ".gsuiFxEcho-dotsLink" ),
             dots = new gsuiDotline(),
             gain = new gsuiSlider(),
             dotGain = new gsuiSlider(),
             dotLowpass = new gsuiSlider(),
+            dotHighpass = new gsuiSlider(),
             blines = new gsuiBeatlines( dots.rootElement );
 
 		this.rootElement = root;
@@ -18,7 +19,9 @@ class gsuiFxEcho {
         this._elDots = dots;
         this._elDotLowpass = dotLowpass;
         this._elDotGain = dotGain;
+        this._elDotHighpass = dotHighpass;
         this._elDotConfigWrap = echoConfigWrap;
+        this._currentDot = null;
 		this.oninput =
 		this.onchange = () => {};
 		this.data = this._proxyCreate();
@@ -28,6 +31,7 @@ class gsuiFxEcho {
 
         root.querySelector( ".gsuiFxEcho-gainWrap" ).append( dotGain.rootElement );
         root.querySelector( ".gsuiFxEcho-lowpassWrap" ).append( dotLowpass.rootElement );
+        root.querySelector( ".gsuiFxEcho-highpassWrap" ).append( dotHighpass.rootElement );
         root.querySelector( ".gsuiFxEcho-configWrap" ).append( gain.rootElement );
         root.querySelector( ".gsuiFxEcho-dotsWrap" ).append( dots.rootElement );
 
@@ -36,11 +40,11 @@ class gsuiFxEcho {
         gain.options( { type: "circular", min: 0, max: 1, step: 0.05, value: 1 } );
         dotGain.options( { type: "circular", min: 0, max: 1, step: 0.01, value: 1 } );
         dotLowpass.options( { type: "circular", min: 0, max: 1, step: 0.01, value: 1 } );
+        dotHighpass.options( { type: "circular", min: 0, max: 1, step: 0.01, value: 1 } );
 
         blines.render();
 
-        dots.rootElement.addEventListener( "click", this._onClickDot.bind( this ));
-
+        dots.onselect = this._onClickDot.bind( this );
         dotsLink.onchange = this._onchangeDotsLinkInput.bind( this );
         beatsInput.onchange = this._onchangeBeatsInput.bind( this );
         gain.oninput = this._oninputGainSlider.bind( this );
@@ -49,6 +53,8 @@ class gsuiFxEcho {
         dotGain.onchange = this._onchangeEchoGainSlider.bind( this );
         dotLowpass.oninput = this._oninputEchoLowpassSlider.bind( this );
         dotLowpass.onchange = this._onchangeEchoLowpassSlider.bind( this );
+        dotHighpass.oninput = this._oninputEchoHighpassSlider.bind( this );
+        dotHighpass.onchange = this._onchangeEchoHighpassSlider.bind( this );
         dots.oninput = this._oninputDots.bind( this );
         dots.onchange = this._onchangeDots.bind( this );
 	}
@@ -57,6 +63,7 @@ class gsuiFxEcho {
         this._elDots.attached();
         this._elDotGain.attached();
         this._elDotLowpass.attached();
+        this._elDotHighpass.attached();
         this._elGain.attached();
         this.resized();
     }
@@ -76,15 +83,16 @@ class gsuiFxEcho {
             case "echoLowpass":
                 this._elDotLowpass.value = val;
                 break;
+            case "echoHighpass":
+                this._elDotHighpass.value = val;
+                break;
             case "echoes":
                 this._elDots.value = val;
                 break;
             case "gain":
-                lg("toto");
                 this._elGain.value = val;
                 break;
             case "beats":
-                lg("beats");
                 this._elBeats.value = val;
                 this._blines.pxPerBeat( this._blinesW / val );
                 this._blines.render();
@@ -104,20 +112,40 @@ class gsuiFxEcho {
         this._elDots.dotsMoveMode( e.target.checked ? "linked" : "free" );
     }
 
-    _onClickDot() {
-        const dotClicked = this._elDots.dotClicked;
-
-        if (dotClicked) {
-            const id = +dotClicked.dataset.dotsId.slice( -1 );
+    _onClickDot(dot) {
+        this._currentDot = dot;
+        if (dot) {
+            const id = +dot.dataset.id;
             const echo = this.data.echoes[id];
-
-            this._elDotGain.setValue(echo.gain);
-            this._elDotLowpass.setValue(echo.lowpass);
-            if ( this._elDotConfigWrap.classList.contains( "hidden" ) ) {
-                this._elDotConfigWrap.classList.remove( "hidden" );
+            if (echo) {
+                this._elDotGain.setValue(echo.gain);
+                this._elDotLowpass.setValue(echo.lowpass);
+                this._elDotHighpass.setValue(echo.highpass);
+                if ( this._elDotConfigWrap.classList.contains( "hidden" ) ) {
+                    this._elDotConfigWrap.classList.remove( "hidden" );
+                }
+            } else if ( !this._elDotConfigWrap.classList.contains( "hidden" ) ) {
+                this._elDotConfigWrap.classList.add( "hidden" );
             }
         } else if ( !this._elDotConfigWrap.classList.contains( "hidden" ) ) {
             this._elDotConfigWrap.classList.add( "hidden" );
+        }
+    }
+
+    _oninputEchoHighpassSlider() {
+        this._callOninput( "echoHighpass", +this._elDotHighpass.value );
+    }
+    _onchangeEchoHighpassSlider() {
+        const highpass = +this._elDotHighpass.value;
+
+        if ( this._currentDot ) {
+            const id = +this._currentDot.dataset.id;
+            const echo = this.data.echoes[id];
+
+            if (highpass !== echo.highpass) {
+                this.data.echoes[id].highpass = highpass;
+                this._callOnchange( { echoes: { [id]: { highpass } } } );
+            }
         }
     }
 
@@ -125,14 +153,14 @@ class gsuiFxEcho {
         this._callOninput( "echoGain", +this._elDotGain.value );
     }
     _onchangeEchoGainSlider() {
-        const dotClicked = this._elDots.dotClicked;
         const gain = +this._elDotGain.value;
 
-        if ( dotClicked ) {
-            const id = +dotClicked.dataset.dotsId.slice( -1 );
+        if ( this._currentDot ) {
+            const id = +this._currentDot.dataset.id;
             const echo = this.data.echoes[id];
 
             if (gain !== echo.gain) {
+                this.data.echoes[id].gain = gain;
                 this._callOnchange( { echoes: { [id]: { gain } } } );
             }
         }
@@ -142,14 +170,14 @@ class gsuiFxEcho {
         this._callOninput( "echoLowpass", +this._elDotLowpass.value );
     }
     _onchangeEchoLowpassSlider() {
-        const dotClicked = this._elDots.dotClicked;
         const lowpass = +this._elDotLowpass.value;
 
-        if ( dotClicked ) {
-            const id = +dotClicked.dataset.dotsId.slice( -1 );
+        if ( this._currentDot ) {
+            const id = +this._currentDot.dataset.id;
             const echo = this.data.echoes[id];
 
             if (lowpass !== echo.lowpass) {
+                this.data.echoes[id].lowpass = lowpass;
                 this._callOnchange( { echoes: { [id]: { lowpass } } } );
             }
         }
@@ -189,12 +217,15 @@ class gsuiFxEcho {
                 const y = dot.y;
 
                 echoes[ key ] = {};
-                if ( x !== undefined ) { echoes[ key ].delay = x; }
-                if ( y !== undefined ) { echoes[ key ].pan = y; }
+                if (!this.data.echoes[ key ]) {
+                    this.data.echoes[ key ] = {};
+                }
+                if ( x !== undefined ) { echoes[ key ].delay = x; this.data.echoes[ key ].delay = x; }
+                if ( y !== undefined ) { echoes[ key ].pan = y; this.data.echoes[ key ].pan = y; }
             }
         });
 
-        this._callOnchange( lg({ echoes }) );
+        this._callOnchange( { echoes } );
     }
 
     _addEcho( id ) {
@@ -229,9 +260,10 @@ class gsuiFxEcho {
         const set = this._proxyUpdateEcho.bind( this, +id ),
             data = Object.seal( {
                 pan: 0,
-                gain: 0,
+                gain: 1,
                 delay: 0,
-                lowpass: 0,
+                lowpass: 1,
+                highpass: 1,
             } ),
             prox = new Proxy( data, { set } );
 

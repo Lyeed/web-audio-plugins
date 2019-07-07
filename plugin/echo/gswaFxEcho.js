@@ -28,15 +28,19 @@ class gswaFxEcho {
         const gain = this.ctx.createGain();
         const pan = this.ctx.createStereoPanner();
         const lowpass = this.ctx.createBiquadFilter();
+        const highpass = this.ctx.createBiquadFilter();
 
-        lowpass.type = "lowpass";
         this.input.connect( delay );
         delay.connect( lowpass );
-        lowpass.connect( gain );
-        lowpass.frequency.value = 20000;
+        lowpass.connect( highpass );
+        lowpass.type = "lowpass";
+        lowpass.frequency.value = 24000;
+        highpass.connect( gain );
+        highpass.type = "highpass";
+        highpass.frequency.value = 40;
         gain.connect( pan );
         pan.connect( this.output );
-        this._repetitions[ id ] = { delay, gain, pan, lowpass };
+        this._repetitions[ id ] = { delay, gain, pan, lowpass, highpass };
     }
     _removeEcho( id ) {
         lg( "waFxRemoveEcho", id );
@@ -56,12 +60,20 @@ class gswaFxEcho {
                 this._repetitions[ id ].delay.delayTime.setValueAtTime( val, this.ctx.currentTime);
                 break;
             case "lowpass":
+                // Clamp the frequency between the minimum value (40 Hz) and half of the
+                // sampling rate.
                 const minValue = 40;
                 const maxValue = this.ctx.sampleRate / 2;
+                // Logarithm (base 2) to compute how many octaves fall in the range.
                 const numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
+                // Compute a multiplier from 0 to 1 based on an exponential scale.
                 const multiplier = Math.pow(2, numberOfOctaves * (val - 1.0));
-
-                this._repetitions[ id ].lowpass.frequency.setValueAtTime( maxValue * multiplier, this.ctx.currentTime);
+                // Get back to the frequency value between min and max.
+                console.log(maxValue * multiplier);
+                this._repetitions[ id ].lowpass.frequency.setValueAtTime( maxValue * multiplier, this.ctx.currentTime );
+                break;
+            case "highpass":
+                this._repetitions[ id ].highpass.frequency.setValueAtTime( Math.max( 10000 * val, 40), this.ctx.currentTime);
                 break;
         }
     }
@@ -79,9 +91,10 @@ class gswaFxEcho {
         const set = this._proxyUpdateEcho.bind( this, +id ),
             data = Object.seal( {
                 pan: 0,
-                gain: 0,
+                gain: 1,
                 delay: 0,
-                lowpass: 0,
+                lowpass: 1,
+                highpass: 1,
             } ),
             prox = new Proxy( data, { set } );
 
