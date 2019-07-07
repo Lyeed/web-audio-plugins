@@ -80,9 +80,11 @@ class gsuiFxEcho {
                 this._elDots.value = val;
                 break;
             case "gain":
+                lg("toto");
                 this._elGain.value = val;
                 break;
             case "beats":
+                lg("beats");
                 this._elBeats.value = val;
                 this._blines.pxPerBeat( this._blinesW / val );
                 this._blines.render();
@@ -220,6 +222,7 @@ class gsuiFxEcho {
     }
     _proxyUpdate( tar, id, obj ) {
         tar [ id ] = obj;
+        this._updateParam( id, obj );
         return true;
     }
     _proxyAddEcho( tar, id, obj ) {
