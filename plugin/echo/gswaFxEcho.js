@@ -73,7 +73,7 @@ class gswaFxEcho {
                 this._repetitions[ id ].lowpass.frequency.setValueAtTime( maxValue * multiplier, this.ctx.currentTime );
                 break;
             case "highpass":
-                this._repetitions[ id ].highpass.frequency.setValueAtTime( Math.max( 10000 * val, 40), this.ctx.currentTime);
+                this._repetitions[ id ].highpass.frequency.setValueAtTime( Math.max( 10000 * ( 1 - val ), 40 ), this.ctx.currentTime );
                 break;
         }
     }
