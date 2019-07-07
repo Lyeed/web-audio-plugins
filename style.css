@@ -17,13 +17,31 @@ body {
 	justify-content: center;
     align-items: center;
     grid-gap: 64px;
+    padding: 32px;
+    box-sizing: border-box;
 }
+#gsuiSamples-wrapper,
 #bufferBtns,
 #canvases,
 #pluginArea {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+}
+
+#pluginArea {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+#gsuiSamples-wrapper {
+    flex-direction: column;
+}
+
+#gsuiSamples-wrapper > h3 {
+    margin-top: 0;
+    margin-bottom: .2em;
+    font-size: 1.8rem;
 }
 
 /* .......................................................................... */
@@ -89,7 +107,8 @@ body {
 	overflow: hidden;
 	border-radius: 2px;
 	box-shadow: 0 0 0 4px rgba( 0, 0, 0, .25 );
-    min-width: 600px;
+    width: 600px;
+    max-width: 600px;
 }
 
 /* .......................................................................... */

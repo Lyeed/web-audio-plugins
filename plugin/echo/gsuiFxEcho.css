@@ -5,9 +5,8 @@
 .gsuiFxEcho {
     display: grid;
     grid-gap: 8px;
-	height: 100%;
 	background-color: var( --gsuiFxEcho-bg );
-    padding: 6px;
+    padding: 18px;
     --gsuiSlider-lineColor: #a14040;
     --gsuiSlider-lineBgColor: rgba( 0, 0, 0, .5 );
 }
@@ -38,7 +37,7 @@
 .gsuiFxEcho-title {
     margin-top: 0;
     margin-bottom: .2em;
-    font-size: 2rem;
+    font-size: 2.3rem;
 }
 
 .gsuiFxEcho-configWrap,
